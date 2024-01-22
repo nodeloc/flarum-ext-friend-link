@@ -1,8 +1,8 @@
 <?php
-namespace HamCQ\CardShow\Logic;
+namespace Nodeloc\FriendLink\Logic;
 
-use HamCQ\CardShow\Model\QslCardShow;
-use HamCQ\CardShow\Model\QslCardViews;
+use Nodeloc\FriendLink\Model\FriendLink;
+use Nodeloc\FriendLink\Model\FriendLinkViews;
 
 class ViewAddLogic
 {
@@ -18,22 +18,22 @@ class ViewAddLogic
         if($actor->id){
             $uid = $actor->id;
         }
-        $status = QslCardViews::where([
-            "card_show_id" => $showId,
+        $status = FriendLinkViews::where([
+            "friend_link_id" => $showId,
             "ip" => $ip
         ])->first();
         if($status){
             return $msg;
         }
 
-        QslCardViews::insert([
+        FriendLinkViews::insert([
             "user_id" => $uid,
-            "card_show_id" => $showId,
+            "friend_link_id" => $showId,
             "ip" => $ip,
             "created_time" => time()
         ]);
 
-        QslCardShow::where([
+        FriendLink::where([
             "id" => $showId,
         ])->increment("view_count");
         $msg["status"] = true;

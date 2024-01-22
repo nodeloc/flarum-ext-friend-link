@@ -1,10 +1,10 @@
 <?php
 
-namespace HamCQ\CardShow\Filter;
+namespace Nodeloc\FriendLink\Filter;
 
 use Flarum\Filter\AbstractFilterer;
 use Flarum\User\User;
-use HamCQ\CardShow\Model\QslCardShow;
+use Nodeloc\FriendLink\Model\FriendLink;
 use Illuminate\Database\Eloquent\Builder;
 
 class GetListFilter extends AbstractFilterer
@@ -20,7 +20,7 @@ class GetListFilter extends AbstractFilterer
 
     protected function getQuery(User $actor): Builder
     {
-        return QslCardShow::query()->where([
+        return FriendLink::query()->where([
             "status" => 1
         ]);
     }

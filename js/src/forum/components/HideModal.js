@@ -13,7 +13,7 @@ export default class HideModal extends Modal {
     title() {
         return "是否删除您分享的卡片";
     }
-    
+
     className() {
         return 'HideCardLinkModal Modal--small';
     }
@@ -21,14 +21,14 @@ export default class HideModal extends Modal {
     content() {
         return(
             <div className="Modal-footer">
-                 <Button 
-                    className={'Button Button--primary m-r-10'} 
+                 <Button
+                    className={'Button Button--primary m-r-10'}
                     onclick = {()=>this.hideReq(this.show_id)}
                 >
                     确定
                 </Button>
-                <Button 
-                    className={'Button'} 
+                <Button
+                    className={'Button'}
                     onclick = {()=>{this.hide()}}
                 >
                     取消
@@ -41,7 +41,7 @@ export default class HideModal extends Modal {
         app
         .request({
             method: 'POST',
-            url: `${app.forum.attribute('apiUrl')}/hamcq/qsl_card_show/hide`,
+            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/hide`,
             body: { show_id },
         })
         .then(() => {
@@ -50,6 +50,6 @@ export default class HideModal extends Modal {
             var ui = document.getElementById("card-"+show_id);
             ui.style.display="none";
         })
-        
+
     }
 }

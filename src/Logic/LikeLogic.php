@@ -1,10 +1,10 @@
 <?php
-namespace HamCQ\CardShow\Logic;
+namespace Nodeloc\FriendLink\Logic;
 use Flarum\Foundation\ValidationException;
-use HamCQ\CardShow\Model\QslCardAction;
-use HamCQ\CardShow\Model\QslCardShow;
+use Nodeloc\FriendLink\Model\FriendLinkAction;
+use Nodeloc\FriendLink\Model\FriendLink;
 use Flarum\Notification\NotificationSyncer;
-use HamCQ\CardShow\Notification\LikedNotification;
+use Nodeloc\FriendLink\Notification\LikedNotification;
 use Flarum\User\User;
 
 class LikeLogic
@@ -16,7 +16,7 @@ class LikeLogic
         if(!$showId){
             throw new ValidationException(['msg' => "您选择的内容有误"]);
         }
-        $cardStatus = QslCardShow::where([
+        $cardStatus = FriendLink::where([
             "id" => $showId
         ])->first();
         if(!$cardStatus){
@@ -26,8 +26,8 @@ class LikeLogic
             throw new ValidationException(['msg' => "您不能点赞自己的内容"]);
         }
 
-        $status = QslCardAction::where([
-            "card_show_id" => $showId,
+        $status = FriendLinkAction::where([
+            "friend_link_id" => $showId,
             "user_id" => $actor->id,
             "type" => 0
         ])->first();
@@ -36,14 +36,14 @@ class LikeLogic
             throw new ValidationException(['msg' => "您已点赞过此内容"]);
         }
 
-        QslCardAction::insert([
-            "card_show_id" => $showId,
+        FriendLinkAction::insert([
+            "friend_link_id" => $showId,
             "user_id" => $actor -> id,
             "type" => 0,
             "created_time" => time()
         ]);
 
-        QslCardShow::where([
+        FriendLink::where([
             "id" => $showId,
         ])->increment("like_count");
 

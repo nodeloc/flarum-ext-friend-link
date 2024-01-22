@@ -1,4 +1,4 @@
-hamcq-qsl-card-show:
+nodeloc-friend-link:
   # For more details on the format
   # Checkout https://docs.flarum.org/extend/i18n/#appendix-a-standard-key-format
   admin:
@@ -6,8 +6,8 @@ hamcq-qsl-card-show:
 
   forum:
     title:
-      page_title: Picture Show
-      share_my_card: Share My Photos
+      page_title: Friend Link
+      share_my_site: Share my site
     filter:
       all_label: All
       score_label: Top
@@ -16,10 +16,24 @@ hamcq-qsl-card-show:
     alerts:
       less_select: Sorry, maximum 2 images
     notification:
-      like: "{username} Like your Picture Show"
+      like: "{username} Like your site"
     button:
-      share_my_card: Share My Photos
+      share_my_site: Share My Site
       loading: Loading
       upload: Upload
     tips:
-      upload_tips: Each time you share, you can select up to 2 photos, and the first selected photo will be used as the cover.
+      upload_tips: Share your site.
+    modal:
+      error:
+        failed_to_load_cropper: Failed to load the image cropper.
+        generic_resize: Something went wrong while cropping & resizing the image.
+        get_image_data: Failed to crop. Make sure your browser's fingerprinting protection is disabled.
+
+      help_text: >
+        The image upload may fail if your browser's privacy settings are very strict.
+        If you're having trouble, try disabling fingerprinting protection.
+        Otherwise, you can either <disableResize>disable compressing the cropped image</disableResize> or <disableCrop>disable cropping altogether</disableCrop>.
+
+      submit_button: Upload
+      submit_crop_button: Crop & Upload
+

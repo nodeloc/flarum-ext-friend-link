@@ -8,15 +8,15 @@ export default class FilterMenuItem extends Component {
 }
 
   view() {
-    const options = ['recent', 'score', 'view'];
+    const options = ['recent', 'score'];
     const selected = app.search.cachedSearches.cardFilter?app.search.cachedSearches.cardFilter:"recent";
-    
+
     return (
       Dropdown.component(
         {
           buttonClassName: 'Button',
           label: app.translator.trans(
-            `hamcq-qsl-card-show.forum.filter.${selected}_label`
+            `nodeloc-friend-link.forum.filter.${selected}_label`
           )
         },
         Object.keys(options).map((value) => {
@@ -46,18 +46,9 @@ export default class FilterMenuItem extends Component {
                     sort: '-like_count',
                   })
                 }
-                if(label=="view"){
-                  app.search.cachedSearches={cardFilter:"view"}
-                  this.state.refreshParams({
-                    filter: {
-                        query: this.search
-                    },
-                    sort: '-view_count',
-                  })
-                }
               },
             },
-            app.translator.trans(`hamcq-qsl-card-show.forum.filter.${label}_label`)
+            app.translator.trans(`nodeloc-friend-link.forum.filter.${label}_label`)
           );
         })
       )

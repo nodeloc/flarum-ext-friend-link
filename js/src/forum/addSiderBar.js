@@ -7,11 +7,11 @@ import Button from 'flarum/common/components/Button';
 export default function addSidebarNav() {
   extend(IndexPage.prototype, 'navItems', function (items) {
     items.add(
-      'qslCardShow',
+      'friendlink',
       <LinkButton icon="fas fa-camera-retro" href={
-        app.route('qslCardShow')
+        app.route('friendlink')
       }>
-        {app.translator.trans(`hamcq-qsl-card-show.forum.title.page_title`)}
+        {app.translator.trans(`nodeloc-friend-link.forum.title.page_title`)}
       </LinkButton>,
       15
     );

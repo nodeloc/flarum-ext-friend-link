@@ -14,8 +14,10 @@ export default class GetList extends mixin(Model, {
     exchange_count: Model.attribute('exchange_count'),
     is_my_like: Model.attribute('is_my_like'),
     status: Model.attribute('status'),
+    sitename:Model.attribute('sitename'),
+    siteurl:Model.attribute('siteurl')
   }) {
     apiEndpoint() {
-      return '/card_show_list' + (this.exists ? '/' + this.data.id : '');
+      return '/friend_link_list' + (this.exists ? '/' + this.data.id : '');
     }
 }

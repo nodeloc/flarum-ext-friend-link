@@ -1,6 +1,6 @@
 <?php
 
-namespace  HamCQ\CardShow\Model;
+namespace  Nodeloc\FriendLink\Model;
 
 use Flarum\Database\AbstractModel;
 

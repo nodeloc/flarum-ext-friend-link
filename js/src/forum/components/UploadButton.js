@@ -22,8 +22,8 @@ export default class UploadButton extends Component {
 
   view() {
     const buttonText = this.attrs.uploader.uploading
-      ? app.translator.trans(`hamcq-qsl-card-show.forum.button.loading`)
-      : app.translator.trans(`hamcq-qsl-card-show.forum.button.upload`);
+      ? app.translator.trans(`nodeloc-friend-link.forum.button.loading`)
+      : app.translator.trans(`nodeloc-friend-link.forum.button.upload`);
 
     return (
       <Tooltip text={buttonText}>

@@ -1,6 +1,6 @@
 <?php
 
-namespace HamCQ\CardShow\Controllers;
+namespace Nodeloc\FriendLink\Controllers;
 
 use Flarum\Api\Controller\AbstractListController;
 use Psr\Http\Message\ServerRequestInterface;
@@ -8,8 +8,8 @@ use Tobscure\JsonApi\Document;
 use Flarum\Http\UrlGenerator;
 use Flarum\Query\QueryCriteria;
 use Flarum\Http\RequestUtil;
-use HamCQ\CardShow\Filter\GetListFilter;
-use HamCQ\CardShow\Serializer\GetListSerializer;
+use Nodeloc\FriendLink\Filter\GetListFilter;
+use Nodeloc\FriendLink\Serializer\GetListSerializer;
 
 class GetListController extends AbstractListController
 {
@@ -24,7 +24,7 @@ class GetListController extends AbstractListController
 
     public $sort = ['created_time' => 'desc'];
 
-    public $sortFields = ['created_time', 'like_count', 'view_count'];
+    public $sortFields = ['created_time', 'like_count'];
 
     // protected $searcher;
 
@@ -53,7 +53,7 @@ class GetListController extends AbstractListController
         $results = $this->filterer->filter($criteria, $limit, $offset);
 
         $document->addPaginationLinks(
-            $this->url->to('api')->route('hamcqCardShow.list'),
+            $this->url->to('api')->route('FriendLink.list'),
             $request->getQueryParams(),
             $offset,
             $limit,

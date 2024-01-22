@@ -86,7 +86,7 @@ export default class UserFileList extends Component {
             const isFileHiding = this.filesBeingHidden.includes(file.uuid());
 
             return (
-              <li aria-busy={isFileHiding}>
+              <li aria-busy={isFileHiding} className="UploadedFile">
                 {app.session.user && (this.user === app.session.user || app.session.user.deleteOthersMediaLibrary()) && (
                   <Button
                     className="Button Button--icon fof-file-delete"

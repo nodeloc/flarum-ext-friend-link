@@ -1,9 +1,9 @@
 <?php
 
-namespace  HamCQ\CardShow\Notification;
+namespace  Nodeloc\FriendLink\Notification;
 
 use Flarum\Notification\Blueprint\BlueprintInterface;
-use HamCQ\CardShow\Model\QslCardShow;
+use Nodeloc\FriendLink\Model\FriendLink;
 
 class LikedNotification implements BlueprintInterface
 {
@@ -11,7 +11,7 @@ class LikedNotification implements BlueprintInterface
 
     public $actor;
 
-    public function __construct($actor, QslCardShow $show)
+    public function __construct($actor, FriendLink $show)
     {
         $this->actor=$actor;
         $this->show=$show;
@@ -34,11 +34,11 @@ class LikedNotification implements BlueprintInterface
 
     public static function getType()
     {
-        return 'cardShowLiked';
+        return 'friendLinkLiked';
     }
 
     public static function getSubjectModel()
     {
-        return QslCardShow::class;
+        return FriendLink::class;
     }
 }

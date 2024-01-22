@@ -1,11 +1,11 @@
-hamcq-qsl-card-show:
+nodeloc-friend-link:
   admin:
     my_cool_key: My Cool Key
 
   forum:
     title:
       page_title: 照片展
-      share_my_card: 分享我的照片
+      share_my_site: 分享我的照片
     filter:
       all_label: 所有
       score_label: 获赞最多
@@ -16,7 +16,7 @@ hamcq-qsl-card-show:
     notification:
       like: "{username} 对您分享的卡片表示很赞"
     button:
-      share_my_card: 分享我的卡片
+      share_my_site: 分享我的卡片
       loading: 上传中
       upload: 点此上传
     tips:

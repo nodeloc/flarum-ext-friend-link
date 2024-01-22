@@ -1,4 +1,4 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('hamcq/qsl-card-show', () => {
+app.initializers.add('nodeloc/friend-link', () => {
 });

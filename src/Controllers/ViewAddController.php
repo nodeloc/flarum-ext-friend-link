@@ -1,5 +1,5 @@
 <?php
-namespace HamCQ\CardShow\Controllers;
+namespace Nodeloc\FriendLink\Controllers;
 
 use Flarum\Http\RequestUtil;
 use Psr\Http\Message\ResponseInterface;
@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Flarum\Foundation\ValidationException;
-use HamCQ\CardShow\Logic\ViewAddLogic;
+use Nodeloc\FriendLink\Logic\ViewAddLogic;
 
 class ViewAddController implements RequestHandlerInterface
 {

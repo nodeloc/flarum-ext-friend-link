@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of hamcq/qsl-card-show.
+ * This file is part of nodeloc/friend-link.
  *
  * Copyright (c) 2023 Emin.lin.
  *
@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace HamCQ\CardShow;
+namespace Nodeloc\FriendLink;
 
 use Flarum\Extend;
-use HamCQ\CardShow\Filter\GetListFilter;
-use HamCQ\CardShow\Model\QslCardShow;
-use HamCQ\CardShow\Notification\LikedNotification;
-use HamCQ\CardShow\Query\GetListQuery;
-use HamCQ\CardShow\Serializer\GetListSerializer;
+use Nodeloc\FriendLink\Filter\GetListFilter;
+use Nodeloc\FriendLink\Model\FriendLink;
+use Nodeloc\FriendLink\Notification\LikedNotification;
+use Nodeloc\FriendLink\Query\GetListQuery;
+use Nodeloc\FriendLink\Serializer\GetListSerializer;
 
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
         ->css(__DIR__.'/less/forum.less')
-        ->route('/qslCardShow', 'qslCardShow', Controllers\IndexController::class),
+        ->route('/friendlink', 'friendlink', Controllers\IndexController::class),
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/less/admin.less'),
@@ -33,17 +33,17 @@ return [
 
     //数据关联用户
     (new Extend\Model(User::class))
-        ->relationship('cardShowList', function ($user) {
-            return $user->hasOne(QslCardShow::class, 'uid');
+        ->relationship('friendLinkList', function ($user) {
+            return $user->hasOne(FriendLink::class, 'uid');
     }),
 
     (new Extend\Routes('api'))
-        ->get('/card_show_list', 'hamcqCardShow.list', Controllers\GetListController::class)
-        ->post('/hamcq/qsl_card_show/add', 'hamcqQslCardShow.create', Controllers\AddController::class)
-        ->post('/hamcq/qsl_card_show/hide', 'hamcqQslCardShow.hide', Controllers\HideController::class)
-        ->post('/hamcq/qsl_card_show/like', 'hamcqQslCardShow.like', Controllers\LikeController::class)
-        ->post('/hamcq/qsl_card_show/view', 'hamcqQslCardShow.view', Controllers\ViewAddController::class),
-    
+        ->get('/friend_link_list', 'FriendLink.list', Controllers\GetListController::class)
+        ->post('/nodeloc/friend_link/add', 'FriendLink.create', Controllers\AddController::class)
+        ->post('/nodeloc/friend_link/hide', 'FriendLink.hide', Controllers\HideController::class)
+        ->post('/nodeloc/friend_link/like', 'FriendLink.like', Controllers\LikeController::class)
+        ->post('/nodeloc/friend_link/view', 'FriendLink.view', Controllers\ViewAddController::class),
+
     (new Extend\Notification())
         ->type(LikedNotification::class, GetListSerializer::class, ['alert']),
 ];

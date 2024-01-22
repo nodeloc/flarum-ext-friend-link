@@ -1,14 +1,14 @@
 <?php
 
-namespace  HamCQ\CardShow\Model;
+namespace  Nodeloc\FriendLink\Model;
 
 use Flarum\Database\AbstractModel;
 use Flarum\User\User;
 
 
-class QslCardShow extends AbstractModel
+class FriendLink extends AbstractModel
 {
-    protected $table = 'qsl_card_show';
+    protected $table = 'friend_link';
 
     public function user()
     {

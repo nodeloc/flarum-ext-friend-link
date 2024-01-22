@@ -6,13 +6,13 @@ export default class LikeNotification extends Notification {
   }
 
   href() {
-    return app.route('qslCardShow');
+    return app.route('friendlink');
   }
 
   content() {
     const notification = this.attrs.notification;
     const user = notification.fromUser();
-    return app.translator.trans('hamcq-qsl-card-show.forum.notification.like', {
+    return app.translator.trans('nodeloc-friend-link.forum.notification.like', {
         user,
     });
   }

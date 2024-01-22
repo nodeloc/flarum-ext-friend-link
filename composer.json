@@ -1,13 +1,14 @@
 {
-    "name": "hamcq/picture-show-community",
-    "description": "show your photos like instagram - Community Edition",
+    "name": "nodeloc/flarum-ext-friend-link",
+    "description": "show your friend link",
     "keywords": [
         "flarum"
     ],
     "type": "flarum-extension",
     "license": "MIT",
     "require": {
-        "flarum/core": "^1.2.0"
+        "flarum/core": "^1.2.0",
+        "nodeloc/friend-link": "^1.0.0"
     },
     "authors": [
         {
@@ -18,12 +19,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "HamCQ\\CardShow\\": "src/"
+            "Nodeloc\\FriendLink\\": "src/"
         }
     },
     "extra": {
         "flarum-extension": {
-            "title": "Picture Show",
+            "title": "Friend Link",
             "category": "",
             "icon": {
                 "name": "fas fa-camera-retro",
@@ -54,7 +55,7 @@
     "prefer-stable": true,
     "autoload-dev": {
         "psr-4": {
-            "HamCQ\\CardShow\\Tests\\": "tests/"
+            "Nodeloc\\FriendLink\\Tests\\": "tests/"
         }
     },
     "scripts": {

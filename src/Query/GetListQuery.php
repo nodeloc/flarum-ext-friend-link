@@ -1,6 +1,6 @@
 <?php
 
-namespace  HamCQ\CardShow\Query;
+namespace  Nodeloc\FriendLink\Query;
 
 use Flarum\Filter\FilterInterface;
 use Flarum\Filter\FilterState;

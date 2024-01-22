@@ -1,6 +1,6 @@
 <?php
 
-namespace HamCQ\CardShow\Controllers;
+namespace Nodeloc\FriendLink\Controllers;
 
 use Flarum\Frontend\Document;
 use Psr\Http\Message\ServerRequestInterface;

@@ -1,44 +1,46 @@
 <?php
 
-namespace HamCQ\CardShow\Serializer;
+namespace Nodeloc\FriendLink\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\User\User;
-use HamCQ\CardShow\Model\QslCardAction;
+use Nodeloc\FriendLink\Model\FriendLinkAction;
 
 class GetListSerializer extends AbstractSerializer
 {
     /**
      * {@inheritdoc}
      */
-    protected $type = 'cardShowList';
+    protected $type = 'friendLinkList';
 
     protected $actor;
 
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultAttributes($qslCardShow)
+    protected function getDefaultAttributes($friendlink)
     {
-        // $user = User::select('username')->where("id", $qslCardShow->user_id)->first();
-        $status = QslCardAction::where([
-            "card_show_id" =>$qslCardShow->id,
+        // $user = User::select('username')->where("id", $friendlink->user_id)->first();
+        $status = FriendLinkAction::where([
+            "friend_link_id" =>$friendlink->id,
             "user_id" => $this->actor->id,
             "type" => 0
         ])->first();
         return [
-            'id' => $qslCardShow->id,
-            'uid' => $qslCardShow->user_id,
-            'img_list' => explode(",",$qslCardShow->img_list),
-            'cover_width' => $qslCardShow->cover_width,
-            'cover_height' => $qslCardShow->cover_height,
-            'created_time' => $qslCardShow->created_time,
-            'like_count' => $qslCardShow->like_count,
-            'view_count' => $qslCardShow->view_count,
-            'exchange_count' => $qslCardShow->exchange_count,
+            'id' => $friendlink->id,
+            'uid' => $friendlink->user_id,
+            'img_list' => explode(",",$friendlink->img_list),
+            'cover_width' => $friendlink->cover_width,
+            'cover_height' => $friendlink->cover_height,
+            'created_time' => $friendlink->created_time,
+            'like_count' => $friendlink->like_count,
+            'view_count' => $friendlink->view_count,
+            'exchange_count' => $friendlink->exchange_count,
             'is_my_like' => $status ? true : false,
-            'status' => $qslCardShow->status == 1 ? true : false,
+            'status' => $friendlink->status == 1 ? true : false,
+            'sitename' => $friendlink->sitename,
+            'siteurl' => $friendlink->siteurl
         ];
     }
 

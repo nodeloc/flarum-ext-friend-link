@@ -7,11 +7,11 @@ use Illuminate\Database\Schema\Builder;
 
 return [
     'up' => function (Builder $schema) {
-        if ($schema->hasTable('qsl_card_show')) {
+        if ($schema->hasTable('friend_link')) {
             return;
         }
-       
-        $schema->create('qsl_card_show', function (Blueprint $table) {
+
+        $schema->create('friend_link', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
             $table->text('img_list')->default('');
@@ -22,9 +22,11 @@ return [
             $table->tinyInteger('status')->default(0);
             $table->integer('created_time');
             $table->integer('update_time');
+            $table->string('sitename');
+            $table->string('siteurl');
         });
     },
     'down' => function (Builder $schema) {
-        
+
     },
 ];

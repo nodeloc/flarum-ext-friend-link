@@ -9,28 +9,26 @@ import avatar from 'flarum/helpers/avatar';
 import Link from 'flarum/components/Link';
 import LoginModal from 'flarum/components/LogInModal';
 import HideModal from './HideModal';
-import { Fancybox } from '@fancyapps/ui';
-
 
 export default class IndexShowPage extends Page {
     oninit(vnode) {
         super.oninit(vnode);
         this.bodyClass = 'App--index';
         app.setTitle(app.translator.trans(
-            `hamcq-qsl-card-show.forum.title.page_title`
+            `nodeloc-friend-link.forum.title.page_title`
         ));
 
-        app.cardShowListState.refreshParams({
+        app.friendLinkListState.refreshParams({
             filter: {
-                
+
             },
             sort: '-created_time',
         });
     }
 
     view(){
-        let loading = null;        
-        const state = app.cardShowListState;
+        let loading = null;
+        const state = app.friendLinkListState;
         if (state.isInitialLoading() || state.isLoadingNext()) {
             loading = LoadingIndicator.component({
               size: 'large',
@@ -48,29 +46,6 @@ export default class IndexShowPage extends Page {
         if (state.isInitialLoading() && state.isEmpty()) {
             return <LoadingIndicator />;
         }
-        Fancybox.bind("[data-fancybox]", {
-                on: {
-                    "done": (fancybox, slide) => {
-                        if(slide.index==0){
-                            var gallery = fancybox.getSlide().$trigger.dataset.fancybox;
-                            var arr = gallery.split('-');
-                            if(arr.length == 2 && arr[1]){
-                                var show_id = arr[1]
-                                app
-                                    .request({
-                                        method: 'POST',
-                                        url: `${app.forum.attribute('apiUrl')}/hamcq/qsl_card_show/view`,
-                                        body: { show_id },
-                                        option: {
-                                            background: true
-                                        }
-                                    })
-                            }
-                        }
-
-                    },
-                },
-        });
         return(
             <div className="IndexPage">
                 {IndexPage.prototype.hero()}
@@ -85,16 +60,16 @@ export default class IndexShowPage extends Page {
                                     state={state}
                                 />
                                 <Button
-                                    className={`Button cardShow-fresh`}
-                                    icon="fas fa-sync" 
+                                    className={`Button friendLink-fresh`}
+                                    icon="fas fa-sync"
                                     aria-label="刷新"
                                     onclick={()=>{
                                         state.refresh()
                                     }}>
                                 </Button>
                                 <Button
-                                    className={`Button cardShow-upload-botton`}
-                                    icon="fas fa-plus" 
+                                    className={`Button friendLink-upload-botton`}
+                                    icon="fas fa-plus"
                                     onclick={()=>{
                                         if(!app.session.user){
                                             app.modal.show(LoginModal)
@@ -104,68 +79,48 @@ export default class IndexShowPage extends Page {
                                             state: state
                                         })
                                     }}>
-                                    {app.translator.trans(`hamcq-qsl-card-show.forum.button.share_my_card`)}
+                                    {app.translator.trans(`nodeloc-friend-link.forum.button.share_my_site`)}
                                 </Button>
                             </div>
-                            <div className="CardShow">
-                                {
-                                    state.getPages().map((pg)=>{
-                                        return pg.items.map((item) => {
-                                            return  item.status() && (
-                                                //key={item.id()} 
-                                                <div id={"card-"+item.id()} className={`card ${this.getClass(item.width(), item.height())}`}>
-                                                    <div className="content">
-                                                        {
-                                                            item.img_list().map((v,k)=>{
-                                                                return (
-                                                                    <a 
-                                                                        style={k==1?"display:none":""}
-                                                                        data-fancybox={"gallery-"+item.id()}
-                                                                        data-src={v}
-                                                                        data-caption={"#"+(k+1)+" via "+item.user().username()}
-                                                                    >
-                                                                        <img style="width:100%" src={v}></img>
-                                                                    </a>
-                                                                )
-                                                            })
-                                                        }
-                                                        
-                                                    </div>
-                                                    <div className="footer">
-                                                        <div style="float:left">
-                                                            <Link
-                                                                href={app.route('user', {
-                                                                    username: item.uid(),
-                                                                })}
-                                                                style="text-decoration: none;"
-                                                            >
-                                                                {avatar(item.user(),{
-                                                                    className: "avatar"
-                                                                })}
-                                                                <span className="username">{item.user().username()}</span>
-                                                            </Link>
-                                                        </div>
-                                                        <div className="action">
-                                                            {this.viewer(item)}
-                                                            {this.likeButton(item,state)}
-                                                            {this.exchangeButton(item,this)}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    })
-                                }
-                            </div>
-                            {<div className="SupportSearchList-loadMore cardShow-more">{loading}</div>}
+                          <ul className="FriendLink-SiteList">
+                            {
+                              state.getPages().map((pg) => {
+                                return pg.items.map((item) => {
+                                  return item.status() && (
+                                    <li className="FriendLink-SiteList-item" id={"card-" + item.id()}>
+                                      <a href={item.siteurl()} style="text-decoration: none;">
+                                        <div className="FriendLink-SiteList-logo">
+                                          <img className="Sitelogo" loading="lazy" src={item.img_list()[0]} />
+                                        </div>
+                                        <div className="FriendLink-SiteList-site">
+                                        <a href={item.siteurl()} target="_blank" rel="noopener noreferrer">
+                                          {item.sitename()}
+                                        </a>
+                                          </div>
+                                        <div className="FriendLink-SiteList-user">
+                                          <span className="username"> <a href={app.route('user', { username: item.uid() })}>{item.user().username()}</a></span>
+                                        </div>
+                                      </a>
+                                      <div className="action-buttons">
+                                        {this.likeButton(item, state)}
+                                        {this.exchangeButton(item, this)}
+                                      </div>
+                                    </li>
+                                  );
+                                });
+                              })
+                            }
+                          </ul>
 
+
+                          {<div className="SupportSearchList-loadMore friendLink-more">{loading}</div>}
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
-    
+
     getClass(width, height){
         // (/Mobi|Android|iPhone/i.test(navigator.userAgent))
         if(width>height){
@@ -229,7 +184,7 @@ export default class IndexShowPage extends Page {
         app
             .request({
                 method: 'POST',
-                url: `${app.forum.attribute('apiUrl')}/hamcq/qsl_card_show/like`,
+                url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/like`,
                 body: { show_id },
             })
             .then((msg) => {
@@ -250,24 +205,28 @@ export default class IndexShowPage extends Page {
             })
     }
 
-    exchangeButton(item,e){
-        if(app.session.user && app.session.user.data.id==item.user().id()){
-            return(
-                <Button
-                    className={`Button bulk`}
-                    icon="fas fa-trash" 
-                    aria-label="删除卡片"
-                    onclick={() => {
-                        if(!app.session.user){
-                            app.modal.show(LoginModal)
-                            return;
-                        }
-                        app.modal.show(HideModal,{
-                            show_id: item.id(),
-                        })                       
-                    }}>
-                </Button>
-            )
-        }
+  exchangeButton(item, e) {
+    const isAdmin = app.session.user && app.session.user.isAdmin();
+
+    if (isAdmin || (app.session.user && app.session.user.data.id === item.user().id())) {
+      return (
+        <Button
+          className={`Button bulk`}
+          icon="fas fa-trash"
+          aria-label="删除卡片"
+          onclick={() => {
+            if (!app.session.user) {
+              app.modal.show(LoginModal);
+              return;
+            }
+
+            app.modal.show(HideModal, {
+              show_id: item.id(),
+            });
+          }}
+        ></Button>
+      );
     }
+  }
+
 }
