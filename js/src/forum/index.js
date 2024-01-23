@@ -32,7 +32,7 @@ app.initializers.add('nodeloc/flarum-ext-friend-link', () => {
     items.add('friendLinkLiked', {
       name: 'friendLinkLiked',
       icon: 'fas fa-camera-retro',
-      label: "有人对您分享的卡片表示很赞",
+      label: "有人对您分享的网站表示很赞",
     });
   });
 

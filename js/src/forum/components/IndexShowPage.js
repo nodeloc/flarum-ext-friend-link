@@ -9,6 +9,7 @@ import avatar from 'flarum/helpers/avatar';
 import Link from 'flarum/components/Link';
 import LoginModal from 'flarum/components/LogInModal';
 import HideModal from './HideModal';
+import ApproveModal from './ApproveModal';
 
 export default class IndexShowPage extends Page {
     oninit(vnode) {
@@ -86,28 +87,37 @@ export default class IndexShowPage extends Page {
                             {
                               state.getPages().map((pg) => {
                                 return pg.items.map((item) => {
-                                  return item.status() && (
+                                  // 检查当前用户是否是管理员
+                                  const isAdmin = app.session.user && app.session.user.isAdmin();
+                                  const isOwner = app.session.user && item.user().id() === app.session.user.id();
+
+                                  // 如果是管理员，或者 item.status() 为真，则渲染该项
+                                  return (isAdmin|| isOwner || item.status()) && (
                                     <li className="FriendLink-SiteList-item" id={"card-" + item.id()}>
                                       <a href={item.siteurl()} style="text-decoration: none;">
                                         <div className="FriendLink-SiteList-logo">
-                                          <img className="Sitelogo" loading="lazy" src={item.img_list()[0]} />
+                                          <img className="Sitelogo" loading="lazy" src={item.sitelogourl()} />
                                         </div>
                                         <div className="FriendLink-SiteList-site">
-                                        <a href={item.siteurl()} target="_blank" rel="noopener noreferrer">
-                                          {item.sitename()}
-                                        </a>
-                                          </div>
+                                          <a href={item.siteurl()} target="_blank" rel="noopener noreferrer">
+                                            {item.sitename()}
+                                          </a>
+                                        </div>
                                         <div className="FriendLink-SiteList-user">
-                                          <span className="username"> <a href={app.route('user', { username: item.uid() })}>{item.user().username()}</a></span>
+                                          <span className="username">
+                                            <a href={app.route('user', { username: item.uid() })}>{item.user().username()}</a>
+                                          </span>
                                         </div>
                                       </a>
                                       <div className="action-buttons">
                                         {this.likeButton(item, state)}
                                         {this.exchangeButton(item, this)}
+                                        {!item.status() && isAdmin && this.approveButton(item, this)}
                                       </div>
                                     </li>
                                   );
                                 });
+
                               })
                             }
                           </ul>
@@ -213,7 +223,7 @@ export default class IndexShowPage extends Page {
         <Button
           className={`Button bulk`}
           icon="fas fa-trash"
-          aria-label="删除卡片"
+          aria-label="删除链接"
           onclick={() => {
             if (!app.session.user) {
               app.modal.show(LoginModal);
@@ -228,5 +238,27 @@ export default class IndexShowPage extends Page {
       );
     }
   }
+  approveButton(item, e) {
+    const isAdmin = app.session.user && app.session.user.isAdmin();
 
+    if (isAdmin) {
+      return (
+        <Button
+          className={`Button bulk`}
+          icon="fas fa-check"
+          aria-label="审批链接"
+          onclick={() => {
+            if (!app.session.user) {
+              app.modal.show(LoginModal);
+              return;
+            }
+
+            app.modal.show(ApproveModal, {
+              show_id: item.id(),
+            });
+          }}
+        ></Button>
+      );
+    }
+  }
 }

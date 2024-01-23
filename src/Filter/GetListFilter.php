@@ -20,8 +20,6 @@ class GetListFilter extends AbstractFilterer
 
     protected function getQuery(User $actor): Builder
     {
-        return FriendLink::query()->where([
-            "status" => 1
-        ]);
+        return FriendLink::query()->whereIn('status', [1, 2]);
     }
 }

@@ -11,11 +11,11 @@ export default class HideModal extends Modal {
     }
 
     title() {
-        return "是否删除您的链接";
+        return "是否审批该链接？";
     }
 
     className() {
-        return 'HideCardLinkModal Modal--small';
+        return 'ApproveCardLinkModal Modal--small';
     }
 
     content() {
@@ -23,13 +23,13 @@ export default class HideModal extends Modal {
             <div className="Modal-footer">
                  <Button
                     className={'Button Button--primary m-r-10'}
-                    onclick = {()=>this.hideReq(this.show_id)}
+                    onclick = {()=>this.approveReq(this.show_id)}
                 >
                     确定
                 </Button>
                 <Button
                     className={'Button'}
-                    onclick = {()=>{this.hide()}}
+                    onclick = {()=>{this.approve()}}
                 >
                     取消
                 </Button>
@@ -37,18 +37,16 @@ export default class HideModal extends Modal {
         )
     }
 
-    hideReq(show_id){
+    approveReq(show_id){
         app
         .request({
             method: 'POST',
-            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/hide`,
+            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/approve`,
             body: { show_id },
         })
         .then(() => {
-            app.alerts.show(Alert, { type: 'success' }, "删除成功");
-            this.hide()
-            var ui = document.getElementById("card-"+show_id);
-            ui.style.display="none";
+            app.alerts.show(Alert, { type: 'success' }, "审批成功");
+            this.hide();
         })
 
     }

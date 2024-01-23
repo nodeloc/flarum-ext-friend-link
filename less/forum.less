@@ -125,8 +125,8 @@
 .FriendLink-SiteList-item {
   display: inline-block;
   vertical-align: top;
-  padding: 0 2px;
-  width: 120px;
+  padding: 5px 2px;
+  width: 20%;
 
   a {
     color: @text-color;
@@ -147,7 +147,11 @@
     }
   }
 }
-
+@media @phone {
+  .FriendLink-SiteList-item {
+    width: 33.3%;
+  }
+}
 .FriendLink-SiteList-logo {
   width: 100px;
   margin: 0 auto;
@@ -185,6 +189,27 @@
   margin-bottom: 20px;
 }
 
+.Sitelogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  color: #fff;
+  vertical-align: top;
+  font-weight: normal;
+  --size: 100px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 100%;
+}
+
+.Sitelogo img {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  vertical-align: top
+}
 
 .AvatarEditor {
   position: relative

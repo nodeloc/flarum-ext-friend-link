@@ -55,7 +55,7 @@ export default class ImageCropModal extends Modal {
             {app.translator.trans(`nodeloc-friend-link.forum.modal.${this.cropper ? 'submit_crop' : 'submit'}_button`)}
           </Button>
 
-          <Button className="Button Button--icon Button--danger" icon="fas fa-times" onclick={this.hide.bind(this)} />
+          <Button className="Button Button--icon Button--danger" icon="fas fa-times" onclick={this.hide.bind(this)}   aria-label={app.translator.trans('core.forum.user.avatar_remove_button')} />
         </div>
       </div>
     );

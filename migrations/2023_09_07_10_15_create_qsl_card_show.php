@@ -22,8 +22,9 @@ return [
             $table->tinyInteger('status')->default(0);
             $table->integer('created_time');
             $table->integer('update_time');
+            $table->string('sitelogourl');
             $table->string('sitename');
-            $table->string('siteurl');
+            $table->string('sitelogourl');
         });
     },
     'down' => function (Builder $schema) {

@@ -41,6 +41,7 @@ return [
         ->get('/friend_link_list', 'FriendLink.list', Controllers\GetListController::class)
         ->post('/nodeloc/friend_link/add', 'FriendLink.create', Controllers\AddController::class)
         ->post('/nodeloc/friend_link/hide', 'FriendLink.hide', Controllers\HideController::class)
+        ->post('/nodeloc/friend_link/approve', 'FriendLink.approve', Controllers\ApproveController::class)
         ->post('/nodeloc/friend_link/like', 'FriendLink.like', Controllers\LikeController::class)
         ->post('/nodeloc/friend_link/view', 'FriendLink.view', Controllers\ViewAddController::class),
 

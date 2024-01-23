@@ -22,7 +22,7 @@ nodeloc-friend-link:
       loading: Loading
       upload: Upload
     tips:
-      upload_tips: Share your site.
+      upload_tips: Your site won't be see before approve, Please add our link first.
     modal:
       error:
         failed_to_load_cropper: Failed to load the image cropper.

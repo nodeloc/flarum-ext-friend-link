@@ -15,7 +15,8 @@ export default class GetList extends mixin(Model, {
     is_my_like: Model.attribute('is_my_like'),
     status: Model.attribute('status'),
     sitename:Model.attribute('sitename'),
-    siteurl:Model.attribute('siteurl')
+    siteurl:Model.attribute('siteurl'),
+    sitelogourl:Model.attribute('sitelogourl')
   }) {
     apiEndpoint() {
       return '/friend_link_list' + (this.exists ? '/' + this.data.id : '');

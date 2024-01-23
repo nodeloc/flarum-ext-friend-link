@@ -40,7 +40,8 @@ class GetListSerializer extends AbstractSerializer
             'is_my_like' => $status ? true : false,
             'status' => $friendlink->status == 1 ? true : false,
             'sitename' => $friendlink->sitename,
-            'siteurl' => $friendlink->siteurl
+            'siteurl' => $friendlink->siteurl,
+            'sitelogourl' => $friendlink->sitelogourl
         ];
     }
 
