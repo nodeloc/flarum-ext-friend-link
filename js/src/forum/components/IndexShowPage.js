@@ -105,7 +105,7 @@ export default class IndexShowPage extends Page {
                                         </div>
                                         <div className="FriendLink-SiteList-user">
                                           <span className="username">
-                                            <a href={app.route('user', { username: item.uid() })}>{item.user().username()}</a>
+                                            <a href={app.route('user', { username: item.user().username() })}>{item.user().username()}</a>
                                           </span>
                                         </div>
                                       </a>
