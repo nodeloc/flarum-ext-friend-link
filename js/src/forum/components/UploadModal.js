@@ -260,12 +260,27 @@ export default class UploadModal extends Modal {
    * @param {File} file
    */
   onConfirmSubmit() {
-    const file = this.attrs.data.get('sitelogo');
+    const file = this.attrs.data && this.attrs.data.get ? this.attrs.data.get('sitelogo') : undefined;
     if (!file) {
       // 处理 file 不存在的情况
+      app.alerts.show(Alert, { type: 'success' }, "站点LOGO不能为空");
       return;
     }
 
+    const sitenameInput = document.getElementById('sitename');
+    const siteurlInput = document.getElementById('siteurl');
+
+    if (!sitenameInput || !siteurlInput) {
+      app.alerts.show(Alert, { type: 'success' }, "站点名称和URL不能为空！");
+      return;
+    }
+    const sitename = sitenameInput.value;
+    const siteurl = siteurlInput.value;
+
+    if (!sitename || !siteurl) {
+      app.alerts.show(Alert, { type: 'success' }, "站点名称和URL不能为空！");
+      return;
+    }
     const data = new FormData();
     data.append('sitelogo', file);
     data.append('sitename', document.getElementById('sitename').value);
