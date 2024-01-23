@@ -10,8 +10,8 @@
         "flarum/core": "^1.2.0"},
     "authors": [
         {
-            "name": "Emin.lin",
-            "email": "emin.lin@live.com",
+            "name": "James",
+            "email": "james@nodeloc.com",
             "role": "Developer"
         }
     ],
@@ -25,7 +25,7 @@
             "title": "Friend Link",
             "category": "",
             "icon": {
-                "name": "fas fa-camera-retro",
+                "name": "fas fa-user-friends",
                 "color": "",
                 "backgroundColor": ""
             }
