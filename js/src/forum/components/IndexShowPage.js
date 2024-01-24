@@ -94,7 +94,7 @@ export default class IndexShowPage extends Page {
                                   // 如果是管理员，或者 item.status() 为真，则渲染该项
                                   return (isAdmin|| isOwner || item.status()) && (
                                     <li className="FriendLink-SiteList-item" id={"card-" + item.id()}>
-                                      <a href={item.siteurl()} style="text-decoration: none;">
+                                      <a href={item.siteurl()}  target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
                                         <div className="FriendLink-SiteList-logo">
                                           <img className="Sitelogo" loading="lazy" src={item.sitelogourl()} />
                                         </div>
