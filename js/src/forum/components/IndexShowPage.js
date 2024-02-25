@@ -5,7 +5,7 @@ import FilterMenuItem from './FilterMenuItem';
 import Button from 'flarum/common/components/Button';
 import UploadModal from './UploadModal';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
-import avatar from 'flarum/helpers/avatar';
+import username from 'flarum/common/helpers/username';
 import Link from 'flarum/components/Link';
 import LoginModal from 'flarum/components/LogInModal';
 import HideModal from './HideModal';
@@ -104,8 +104,7 @@ export default class IndexShowPage extends Page {
                             </div>
                             <div className="FriendLink-SiteList-user">
                                           <span className="username">
-                                            <a
-                                              href={app.route('user', {username: item.user().username()})}>{item.user().username()}</a>
+                                            <a href={app.route('user', { username: item.user().username() })}>{username(item.user())}</a>
                                           </span>
                             </div>
                           </a>
