@@ -11,7 +11,7 @@ export default class HideModal extends Modal {
     }
 
     title() {
-        return "是否审批该链接？";
+        return "是否更改状态？";
     }
 
     className() {
@@ -45,7 +45,7 @@ export default class HideModal extends Modal {
             body: { show_id },
         })
         .then(() => {
-            app.alerts.show(Alert, { type: 'success' }, "审批成功");
+            app.alerts.show(Alert, { type: 'success' }, "更改成功");
             this.hide();
         })
 

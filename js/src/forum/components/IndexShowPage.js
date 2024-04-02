@@ -249,7 +249,7 @@ export default class IndexShowPage extends Page {
         <Button
           className={`Button bulk`}
           icon="fas fa-check"
-          aria-label="审批链接"
+          aria-label="更改状态"
           onclick={() => {
             if (!app.session.user) {
               app.modal.show(LoginModal);

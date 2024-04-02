@@ -28,7 +28,7 @@ class ApproveLogic
         $isAdmin = $actor->isAdmin();
 
         if (!$isAdmin) {
-            throw new ValidationException(['msg' => "只有管理员可以审批"]);
+            throw new ValidationException(['msg' => "只有管理员可以变更"]);
         }
 
         FriendLink::where([

@@ -15,9 +15,9 @@ class GetListController extends AbstractListController
 {
     public $serializer = GetListSerializer::class;
 
-    public $limit = 12;
+    public $limit = 100;
 
-    public $maxLimit = 20;
+    public $maxLimit = 100;
 
     protected $filterer;
     public $include = ["user"];//关联操作

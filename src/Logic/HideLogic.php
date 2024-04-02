@@ -34,7 +34,7 @@ class HideLogic
         FriendLink::where([
             "id" => $showId,
         ])->update([
-            "status" => 0,
+            "status" => 2,
             "update_time" => time()
         ]);
 

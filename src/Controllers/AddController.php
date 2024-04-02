@@ -2,6 +2,7 @@
 namespace Nodeloc\FriendLink\Controllers;
 
 use Flarum\Http\RequestUtil;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,7 +16,8 @@ class AddController implements RequestHandlerInterface
     {
         $actor = RequestUtil::getActor($request);
         $actor->assertRegistered();
+        $file = Arr::get($request->getUploadedFiles(), 'sitelogo');
 
-        return new JsonResponse( resolve(AddLogic::class)->save($actor, $request->getParsedBody()) );
+        return new JsonResponse( resolve(AddLogic::class)->save($actor, $request->getParsedBody(),$file) );
     }
 }
