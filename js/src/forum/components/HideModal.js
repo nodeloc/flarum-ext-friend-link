@@ -41,7 +41,7 @@ export default class HideModal extends Modal {
         app
         .request({
             method: 'POST',
-            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/hide`,
+            url: `${app.forum.attribute('apiUrl')}/nodeloc/vps/hide`,
             body: { show_id },
         })
         .then(() => {

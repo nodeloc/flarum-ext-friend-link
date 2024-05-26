@@ -7,13 +7,13 @@ import Button from 'flarum/common/components/Button';
 export default function addSidebarNav() {
   extend(IndexPage.prototype, 'navItems', function (items) {
     items.add(
-      'friendlink',
-      <LinkButton icon="fas fa-camera-retro" href={
-        app.route('friendlink')
+      'vps',
+      <LinkButton icon="fa-solid fa-server" href={
+        app.route('vps')
       }>
-        {app.translator.trans(`nodeloc-friend-link.forum.title.page_title`)}
+        {app.translator.trans(`nodeloc-vps.forum.title.page_title`)}
       </LinkButton>,
-      15
+      100
     );
 
     return items;

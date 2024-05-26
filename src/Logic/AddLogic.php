@@ -1,18 +1,15 @@
 <?php
 
-namespace Nodeloc\FriendLink\Logic;
+namespace Nodeloc\VPS\Logic;
 
 use Flarum\Foundation\ValidationException;
-use Nodeloc\FriendLink\Model\FriendLink;
+use Nodeloc\VPS\Model\CurrencyRate;
+use Nodeloc\VPS\Model\VPS;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManagerStatic as ImageManagerStatic;
 use Flarum\Foundation\AbstractValidator;
 use Intervention\Image\Exception\NotReadableException;
-use Intervention\Image\ImageManager;
-use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Laminas\Diactoros\StreamFactory;
@@ -20,61 +17,76 @@ use Laminas\Diactoros\StreamFactory;
 class AddLogic
 {
 
-    protected $uploadDir;
     protected $laravelValidator;
 
-    /**
-     * @var ImageManager
-     */
-    protected $imageManager;
-    public function __construct(Factory $filesystemFactory, ImageManager $imageManager)
-    {
-        $this->imageManager = $imageManager;
-        $this->uploadDir = $filesystemFactory->disk('flarum-avatars');
+    function getCurrencyRate($currencyCode) {
+        // 从数据库中查询汇率
+        $currencyRate = CurrencyRate::where('currency', $currencyCode)->first();
+
+        // 如果找到汇率，返回它，否则返回0
+        if ($currencyRate) {
+            return $currencyRate->rate;
+        } else {
+            return 0;
+        }
     }
-    public function save($actor, $data,$file)
+
+
+    public function save($actor, $data)
     {
         $msg = ["status" => false, "msg" => ""];
 
-        $siteName = isset($data["sitename"]) ? $data["sitename"] : null;
-        $siteUrl = isset($data["siteurl"]) ? $data["siteurl"] : null;
-        if (!$this->validateInput($siteName) || !$this->validateInput($siteUrl)) {
-            throw new ValidationException(['msg' => "输入内容不合法"]);
-        }
+        $vps = new VPS();
+        $vps->user_id = $actor->id;
+        $vps->merchant_id = isset($data["merchant_id"]) ? $data["merchant_id"] : null;
+        $vps->location_id = isset($data["location_id"]) ? $data["location_id"] : null;
+        $vps->product_name = isset($data["product_name"]) ? $data["product_name"] : null;
+        $vps->product_type = isset($data["product_type"]) ? $data["product_type"] : 0;
+        $vps->cpu = isset($data["cpu"]) ? $data["cpu"] : null;
+        $vps->memory = isset($data["memory"]) ? $data["memory"] : null;
+        $vps->storage = isset($data["storage"]) ? $data["storage"] : null;
+        $vps->disk_type = isset($data["disk_type"]) ? $data["disk_type"] : null;
+        $vps->bandwidth = isset($data["bandwidth"]) ? $data["bandwidth"] : null;
+        $vps->gig = isset($data["GIG"]) ? $data["GIG"] : null;
+        $vps->cost = isset($data["cost"]) ? $data["cost"] : null;
+        $vps->currency = isset($data["currency"]) ? $data["currency"] : null;
+        $vps->score = isset($data["score"]) ? $data["score"] : null;
+        $vps->payment_cycle = isset($data["payment_cycle"]) ? $data["payment_cycle"] : null;
+        $vps->monitor_url = isset($data["monitor_url"]) ? $data["monitor_url"] : null;
+        $vps->monitor_rule = isset($data["monitor_rule"]) ? $data["monitor_rule"] : null;
+        $vps->review_url  = isset($data["review_url"]) ? $data["review_url"] : null;
+        $vps->buy_url = isset($data["buy_url"]) ? $data["buy_url"] : null;
+        $vps->status = 1;
 
-        if (!$file) {
-            throw new ValidationException(['msg' => "请选择图片"]);
+        if (isset($vps->payment_cycle, $vps->cost, $vps->currency)) {
+            // 定义支付周期与月数的映射关系
+            $cycleMap = [1, 3, 6, 12, 24, 36, 60];
+            // 获取实际的支付周期月数
+            $months = $cycleMap[$vps->payment_cycle];
+            // 计算一年的成本
+            $annualCost = ($vps->cost / $months) * 12;
+            $currencyMap = ["USD", "CNY", "HKD", "EUR", "GBP", "JPY"];
+            $currency_rate = $this->getCurrencyRate($currencyMap[$vps->currency]);
+            if($currency_rate>0){
+                $vps->price = $annualCost / $currency_rate;
+            }else{
+                $vps->price = 0;
+            }
         }
-        $this->assertFileRequired($file);
-        $this->assertFileMimes($file);
-        $this->assertFileSize($file);
-        // 使用 ImageManager 创建 Image 实例
-
-        $status = FriendLink::where([
-            "user_id" => $actor->id,
-            "siteurl" => $siteUrl,
-            "status" => 1,
+        $status = VPS::where([
+            "product_name" => $vps->product_name,
+            "merchant_id" => $vps->merchant_id
         ])->first();
 
         if ($status) {
-            throw new ValidationException(['msg' => "您已分享过此内容"]);
-        }
-        // 处理文件上传
-        try {
-            $uploadedSitelogo = $this->upload($file);
-        } catch (\Exception $e) {
-            throw new ValidationException(['msg' => $e->getMessage()]);
+            throw new ValidationException(['msg' => "产品已存在"]);
         }
 
-        FriendLink::insert([
-            "user_id" => $actor->id,
-            "status" => 2,
-            "created_time" => time(),
-            "sitename" => $siteName,
-            "siteurl" => $siteUrl,
-            "sitelogourl" => $uploadedSitelogo, // 将上传后的文件路径保存到数据库
-        ]);
-
+        $vps->save();
+        // 保存标签数据
+        if (isset($data['tags'])) {
+            $vps->tags()->sync($data['tags']);
+        }
         $msg["status"] = true;
         return $msg;
     }
@@ -86,83 +98,5 @@ class AddLogic
         } else {
             return false; // 输入包含非法字符
         }
-    }
-    /**
-     * @param Image $image
-     */
-    public function upload(UploadedFileInterface $file)
-    {
-        // 创建StreamFactory实例
-        $streamFactory = new StreamFactory();
-        // 从上传文件创建流
-        $stream = $streamFactory->createStreamFromFile($file->getStream()->getMetadata('uri'));
-        // 使用Intervention Image处理图像
-        $image = ImageManagerStatic ::make($stream)->fit(100, 100)->encode('png');
-        $ext = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-        $filename = Str::random().'.'.$ext;
-        $stream->rewind();
-        $this->uploadDir->put($filename, $image);
-        return $this->uploadDir->url($filename);
-
-    }
-    protected function assertFileRequired(UploadedFileInterface $file)
-    {
-        $error = $file->getError();
-
-        if ($error !== UPLOAD_ERR_OK) {
-            if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
-                throw new ValidationException(['msg' => 'file_too_large']);
-            }
-
-            if ($error === UPLOAD_ERR_NO_FILE) {
-                throw new ValidationException(['msg' => '图片不能为空']);
-            }
-            throw new ValidationException(['msg' => 'file_upload_failed']);
-        }
-    }
-
-    protected function assertFileMimes(UploadedFileInterface $file)
-    {
-        $allowedTypes = $this->getAllowedTypes();
-
-        // Block PHP files masquerading as images
-        $phpExtensions = ['php', 'php3', 'php4', 'php5', 'phtml'];
-        $fileExtension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-
-        if (in_array(trim(strtolower($fileExtension)), $phpExtensions)) {
-            throw new ValidationException(['msg' => '文件类型不允许']);
-        }
-
-        $guessedExtension = MimeTypes::getDefault()->getExtensions($file->getClientMediaType())[0] ?? null;
-
-        if (! in_array($guessedExtension, $allowedTypes)) {
-            throw new ValidationException(['msg' => '文件类型不允许']);
-        }
-
-        try {
-            $this->imageManager->make($file->getStream()->getMetadata('uri'));
-        } catch (NotReadableException $_e) {
-            throw new ValidationException(['msg' => '文件不存在']);
-        }
-    }
-
-    protected function assertFileSize(UploadedFileInterface $file)
-    {
-        $maxSize = $this->getMaxSize();
-
-        if ($file->getSize() > $maxSize) {
-            throw new ValidationException(['msg' => '文件大小'.$file->getSize().'超过'.$maxSize]);
-        }
-    }
-
-
-    protected function getMaxSize()
-    {
-        return 24096;
-    }
-
-    protected function getAllowedTypes()
-    {
-        return ['jpeg', 'jpg', 'png', 'bmp', 'gif'];
     }
 }

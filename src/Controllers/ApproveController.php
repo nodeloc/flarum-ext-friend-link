@@ -1,8 +1,8 @@
 <?php
-namespace Nodeloc\FriendLink\Controllers;
+namespace Nodeloc\VPS\Controllers;
 
 use Flarum\Http\RequestUtil;
-use Nodeloc\FriendLink\Logic\ApproveLogic;
+use Nodeloc\VPS\Logic\ApproveLogic;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

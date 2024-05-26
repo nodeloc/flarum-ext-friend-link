@@ -1,4 +1,4 @@
-.FriendLink {
+.VPS {
     margin-top: 15px;
     display: grid;
     grid-auto-rows: 100px;
@@ -68,7 +68,7 @@
   text-align: center;
 }
 @media @phone {
-    .FriendLink {
+    .VPS {
         grid-auto-rows: 130px;
         grid-template-columns: repeat(2, minmax(25%, 1fr));
         .avatar{
@@ -91,8 +91,26 @@
         }
     }
 }
+.add-select{
+font-weight: 600;
+border-radius: var(--border-radius);
+background: var(--tag-bg);
+color: var(--tag-color);
+text-transform: none;
+text-decoration: none !important;
+font-size: 85%;
+display: inline-block;
+padding: .1em .5em;
+vertical-align: bottom;
+height: 28px;
+}
 
-.FriendLink-SiteList {
+.add-select.unselect {
+  --tag-bg: transparent;
+  --tag-color: var(--muted-color);
+  border: 1px dotted;
+}
+.VPS-SiteList {
   list-style: none;
   margin: 0;
   padding: 1.5em 0 0 0;
@@ -122,7 +140,7 @@
   }
 }
 
-.FriendLink-SiteList-item {
+.VPS-SiteList-item {
   display: inline-block;
   vertical-align: top;
   padding: 5px 2px;
@@ -148,16 +166,16 @@
   }
 }
 @media @phone {
-  .FriendLink-SiteList-item {
+  .VPS-SiteList-item {
     width: 33.3%;
   }
 }
-.FriendLink-SiteList-logo {
+.VPS-SiteList-logo {
   width: 100px;
   margin: 0 auto;
   position: relative;
 }
-.FriendLink-SiteList-site {
+.VPS-SiteList-site {
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -166,120 +184,27 @@
   font-size: 1.1em;
 }
 
-.FriendLink-SiteList-user {
+.VPS-SiteList-user {
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   margin-bottom: 10px;
 }
-.FriendLink-SiteList-user a{
+.VPS-SiteList-user a{
   font-size: 0.9em;
   font-weight: lighter;
 }
-.FriendLink-content {
+.VPS-content {
   text-align: center;
 }
 
-.FriendLink-title {
+.VPS-title {
   font-size: 2em;
 }
 
-.FriendLink-description {
+.VPS-description {
   margin-bottom: 20px;
-}
-
-.Sitelogo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: content-box;
-  color: #fff;
-  vertical-align: top;
-  font-weight: normal;
-  --size: 100px;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 100%;
-}
-
-.Sitelogo img {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  vertical-align: top
-}
-
-.AvatarEditor {
-  position: relative
-}
-
-.AvatarEditor .Dropdown-toggle {
-  opacity: 0;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 100%;
-  background: rgba(0,0,0,0.6);
-  text-align: center;
-  text-decoration: none;
-  border: 0
-}
-
-.AvatarEditor .AvatarEditor--noAvatar {
-  opacity: 0.7
-}
-
-.AvatarEditor:hover .Dropdown-toggle,.AvatarEditor.open .Dropdown-toggle,.AvatarEditor.loading .Dropdown-toggle,.AvatarEditor.dragover .Dropdown-toggle {
-  opacity: 1
-}
-
-.AvatarEditor .LoadingIndicator-container {
-  color: #fff;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0
-}
-@import './libs/cropper';
-
-.FofProfileImageCropModal {
-  .cropper-view-box,
-  .cropper-face {
-    border-radius: 50%;
-  }
-
-  .Modal-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .Image-container {
-    position: relative;
-    min-height: 100px;
-
-    .LoadingIndicator-container {
-      position: absolute;
-      width: 100%;
-    }
-
-    img {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    > img:not([data-ready]) {
-      opacity: 0;
-    }
-  }
-
-  .helpText {
-    margin-bottom: 20px;
-  }
 }
 
 .FilterMenuItem-button--follow {
@@ -309,11 +234,12 @@
   margin-top: 3px;
 }
 
-.friendLink-upload-botton{
+.vps-add-botton{
   float: right;
+  margin-left: 5px;
 }
 
-.friendLink-fresh{
+.vps-fresh{
   float: right;
   padding: 8px 12px;
   text-align: center;
@@ -321,7 +247,133 @@
   width: 38px
 }
 
-.friendLink-more{
+.vps-more{
   margin-top: 15px;
   text-align: center;
+}
+/* 全局样式 */
+ul.VPS-SiteList {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  margin: 10px auto;
+  border-radius: 7px;
+}
+
+li.el-table__row,
+li.VPS-List-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+li.el-table__row {
+  font-weight: bold;
+}
+
+li.VPS-List-item {
+}
+
+li.VPS-List-item:nth-child(odd) {
+}
+
+li.VPS-List-item:hover {
+  background-color: var(--discussion-list-item-bg-hover);
+}
+
+/* 单元格样式 */
+.cell, .VPS-Product, .VPS-config, .action-buttons {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+}
+
+Button.merchant{
+  margin-left: 10px;
+}
+
+.VPS-Product span {
+  display: block;
+}
+
+.VPS-Product {
+  text-align: left;
+  font-size: 15px;
+  width: 15%;
+  .merchant{
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .product{
+    font-size: 12px;
+    color: #858c99;
+  }
+}
+
+.VPS-config {
+  font-size: 12px;
+  width: 20%;
+}
+.VPS-location {
+  font-size: 12px;
+  width: 10%;
+}
+.VPS-cost {
+  font-size: 12px;
+  width: 15%;
+}
+.VPS-tags {
+  font-size: 12px;
+  width: 15%;
+  .tag-style{
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    background: var(--tag-bg);
+    color: var(--tag-color);
+    text-transform: none;
+    text-decoration: none !important;
+    font-size: 85%;
+    display: inline-block;
+    padding: .1em .5em;
+    vertical-align: bottom;
+    margin: .1em .5em;
+  }
+}
+.VPS-store {
+  font-size: 12px;
+  width: 10%;
+  span{
+    .fas.fa-star {
+      color: var(--link-color);
+    }
+
+    .far.fa-star {
+      color: lightgray;
+    }
+  }
+}
+/* 按钮样式 */
+.VPS-action {
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a{
+    display: inline-block;
+    padding: .1em .5em;
+    vertical-align: bottom;
+    margin: .1em .5em;
+  }
+}
+
+/* 自定义标签样式 */
+.VPS-config span,
+.VPS-Product span {
+  display: inline-block;
+  margin: 2px 0;
+}
+.product_config{
+  .Select{
+    width: 25%;
+  }
 }

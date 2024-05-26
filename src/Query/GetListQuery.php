@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodeloc\FriendLink\Query;
+namespace Nodeloc\VPS\Query;
 
 use Flarum\Filter\FilterInterface;
 use Flarum\Filter\FilterState;

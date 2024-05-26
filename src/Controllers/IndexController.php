@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodeloc\FriendLink\Controllers;
+namespace Nodeloc\VPS\Controllers;
 
 use Flarum\Frontend\Document;
 use Psr\Http\Message\ServerRequestInterface;

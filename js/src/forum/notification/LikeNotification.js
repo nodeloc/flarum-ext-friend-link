@@ -6,13 +6,13 @@ export default class LikeNotification extends Notification {
   }
 
   href() {
-    return app.route('friendlink');
+    return app.route('vps');
   }
 
   content() {
     const notification = this.attrs.notification;
     const user = notification.fromUser();
-    return app.translator.trans('nodeloc-friend-link.forum.notification.like', {
+    return app.translator.trans('nodeloc-vps.forum.notification.like', {
         user,
     });
   }

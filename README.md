@@ -11,19 +11,19 @@ User can add friend link ,show friend link.
 Install with composer:
 
 ```sh
-composer require nodeloc/flarum-ext-friend-link:"*"
+composer require nodeloc/flarum-ext-vps:"*"
 ```
 
 ## Updating
 
 ```sh
-composer update nodeloc/flarum-ext-friend-link:"*"
+composer update nodeloc/flarum-ext-vps:"*"
 php flarum migrate
 php flarum cache:clear
 ```
 
 ## Links
 
-- [Packagist](https://packagist.org/packages/nodeloc/flarum-ext-friend-link)
-- [GitHub](https://github.com/flarum-ext-friend-link)
+- [Packagist](https://packagist.org/packages/nodeloc/flarum-ext-vps)
+- [GitHub](https://github.com/flarum-ext-vps)
 - [Discuss](https://www.nodeloc.com)

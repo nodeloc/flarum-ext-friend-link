@@ -1,6 +1,6 @@
 {
-    "name": "nodeloc/flarum-ext-friend-link",
-    "description": "show your friend link",
+    "name": "nodeloc/flarum-ext-vps",
+    "description": "VPS List",
     "keywords": [
         "flarum"
     ],
@@ -17,15 +17,15 @@
     ],
     "autoload": {
         "psr-4": {
-            "Nodeloc\\FriendLink\\": "src/"
+            "Nodeloc\\VPS\\": "src/"
         }
     },
     "extra": {
         "flarum-extension": {
-            "title": "Friend Link",
+            "title": "VPS/Server",
             "category": "",
             "icon": {
-                "name": "fas fa-user-friends",
+                "name": "fa-solid fa-server",
                 "color": "",
                 "backgroundColor": ""
             }

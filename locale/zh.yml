@@ -1,27 +1,55 @@
-nodeloc-friend-link:
+nodeloc-vps:
   admin:
+    settings:
+      allow_add: 允许增加
     my_cool_key: My Cool Key
 
   forum:
     title:
-      page_title: 酷站
+      page_title: VPS/Server
       share_my_site: 分享我的酷站
     filter:
       all_label: 所有
-      score_label: 获赞最多
+      score_label: 评分最高
+      score_asc_label: 评分最低
       recent_label: 新鲜出炉
       view_label: 最多翻阅
+      cpu_label: CPU最多
+      cpu_asc_label: CPU最少
+      memory_label: 内存最多
+      memory_asc_label: 内存最少
+      storage_label: 硬盘最大
+      storage_asc_label: 硬盘最小
+      bandwidth_label: 流量最多
+      bandwidth_asc_label: 流量最少
+      GIG_label: 带宽最大
+      GIG_asc_label: 带宽最小
+      price_label: 单价最高
+      price_asc_label: 单价最低
+      search_label: 搜索
+      accessible_label: 使用
+      remove_filter: 移除过滤器
+      merchant_label: 选择商家
+      all: 所有
+      no_results: 无匹配数据
+      start_typing: 输入内容
+      keep_typing: 继续输入
     alerts:
       less_select: 抱歉，最多只能选择 2 张图片
     notification:
       like: "{username} 对您分享的网站表示很赞"
     button:
-      share_my_site: 分享我的网站
+      product: 产品
+      merchant: 商家
+      location: 地区
+      tag: 标签
       loading: 上传中
       upload: 点此上传
     tips:
       upload_tips: 酷站提交后审核通过才会显示，请先在酷站添加本站链接
     modal:
+      add_product:
+        title: 添加产品
       error:
         failed_to_load_cropper: Failed to load the image cropper.
         generic_resize: Something went wrong while cropping & resizing the image.
@@ -34,3 +62,46 @@ nodeloc-friend-link:
 
       submit_button: Upload
       submit_crop_button: Crop & Upload
+    product:
+      product_name: 产品名称
+      product_type: 独报?
+      cpu: CPU
+      memory: 内存
+      storage: 硬盘大小
+      disk_type: 硬盘类型
+      bandwidth: 流量
+      GIG: 带宽
+      cost: 价格
+      payment_cycle: 周期
+      monitor_url: 监控地址
+      monitor_rule: 监控规则
+      review_url: 评测帖子URL
+      buy_url: 购买地址(Aff)
+      status: 状态
+      currency: 币种
+      score: 评分
+    merchant:
+      title: 商家管理
+      merchant_name: 商家名称
+      merchant_type: 商家类型
+      merchant_intro: 商家介绍
+      merchant_url: 商家网址
+      merchant_link: 商家口碑
+      merchant_homepage: 商家主页
+    location:
+      title: 地区管理
+      location_name: 地区名称
+      location_intro: 地区介绍
+    tag:
+      title: 标签管理
+      tag_name: 标签名称
+      tag_intro: 标签介绍
+    merchant_selection_modal:
+      title: 选择商家
+      submit_button: 提交
+    location_selection_modal:
+      title: 选择地区
+      submit_button: 提交
+    vpstag_selection_modal:
+      title: 选择地区
+      submit_button: 提交

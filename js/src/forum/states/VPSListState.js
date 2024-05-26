@@ -1,14 +1,14 @@
 import PaginatedListState from 'flarum/common/states/PaginatedListState';
 import PaginatedListRequestParams from 'flarum/common/states/PaginatedListState';
 
-export default class FriendLinkListState extends PaginatedListState {
+export default class VPSListState extends PaginatedListState {
   constructor(params, page = 1) {
     super(params, page, 12);
-    this.friendLinkList = [];
+    this.vpsList = [];
   }
 
   get type() {
-    return 'friend_link_list';
+    return 'vps_list';
   }
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Nodeloc\FriendLink\Controllers;
+namespace Nodeloc\VPS\Controllers;
 
 use Flarum\Http\RequestUtil;
 use Psr\Http\Message\ResponseInterface;
@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Flarum\Foundation\ValidationException;
-use Nodeloc\FriendLink\Logic\HideLogic;
+use Nodeloc\VPS\Logic\HideLogic;
 
 class HideController implements RequestHandlerInterface
 {

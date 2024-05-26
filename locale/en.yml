@@ -1,29 +1,55 @@
-nodeloc-friend-link:
-  # For more details on the format
-  # Checkout https://docs.flarum.org/extend/i18n/#appendix-a-standard-key-format
+nodeloc-vps:
   admin:
+    settings:
+      allow_add: Allow add
     my_cool_key: My Cool Key
 
   forum:
     title:
-      page_title: Friend Link
+      page_title: VPS/Server
       share_my_site: Share my site
     filter:
       all_label: All
-      score_label: Top
-      recent_label: Recent
-      view_label: Viewer
+      score_label: Highest Score
+      score_asc_label: Lowest Score
+      recent_label: Fresh Out
+      view_label: Most Viewed
+      cpu_label: Most CPU
+      cpu_asc_label: Least CPU
+      memory_label: Most Memory
+      memory_asc_label: Least Memory
+      storage_label: Largest Storage
+      storage_asc_label: Smallest Storage
+      bandwidth_label: Most Traffic
+      bandwidth_asc_label: Least Traffic
+      GIG_label: Largest Bandwidth
+      GIG_asc_label: Smallest Bandwidth
+      price_label: Highest Price
+      price_asc_label: Lowest Price
+      search_label: Search
+      accessible_label: Accessible
+      remove_filter: Remove Filter
+      merchant_label: Select Merchant
+      all: All
+      no_results: No Matching Data
+      start_typing: Start Typing
+      keep_typing: Keep Typing
     alerts:
-      less_select: Sorry, maximum 2 images
+      less_select: Sorry, you can select up to 2 images
     notification:
-      like: "{username} Like your site"
+      like: "{username} liked the website you shared"
     button:
-      share_my_site: Share My Site
-      loading: Loading
-      upload: Upload
+      product: Product
+      merchant: Merchant
+      location: Location
+      tag: Tag
+      loading: Uploading
+      upload: Click to Upload
     tips:
-      upload_tips: Your site won't be see before approve, Please add our link first.
+      upload_tips: Cool sites will be displayed after review. Please add our site link to your cool site first
     modal:
+      add_product:
+        title: Add Product
       error:
         failed_to_load_cropper: Failed to load the image cropper.
         generic_resize: Something went wrong while cropping & resizing the image.
@@ -36,4 +62,46 @@ nodeloc-friend-link:
 
       submit_button: Upload
       submit_crop_button: Crop & Upload
-
+    product:
+      product_name: Product Name
+      product_type: Dedicated?
+      cpu: CPU
+      memory: Memory
+      storage: Storage Size
+      disk_type: Disk Type
+      bandwidth: Traffic
+      GIG: Bandwidth
+      cost: Price
+      payment_cycle: Payment Cycle
+      monitor_url: Monitor URL
+      monitor_rule: Monitor Rule
+      review_url: Review Post URL
+      buy_url: Purchase Link (Aff)
+      status: Status
+      currency: Currency
+      score: Score
+    merchant:
+      title: Merchant Management
+      merchant_name: Merchant Name
+      merchant_type: Merchant Type
+      merchant_intro: Merchant Introduction
+      merchant_url: Merchant Website
+      merchant_link: Merchant Reputation
+      merchant_homepage: Merchant Homepage
+    location:
+      title: Location Management
+      location_name: Location Name
+      location_intro: Location Introduction
+    tag:
+      title: Tag Management
+      tag_name: Tag Name
+      tag_intro: Tag Introduction
+    merchant_selection_modal:
+      title: Select Merchant
+      submit_button: Submit
+    location_selection_modal:
+      title: Select Location
+      submit_button: Submit
+    vpstag_selection_modal:
+      title: Select VPS Tag
+      submit_button: Submit

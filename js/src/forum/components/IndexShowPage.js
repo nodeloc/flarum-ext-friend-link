@@ -3,31 +3,91 @@ import IndexPage from 'flarum/components/IndexPage';
 import listItems from 'flarum/common/helpers/listItems';
 import FilterMenuItem from './FilterMenuItem';
 import Button from 'flarum/common/components/Button';
-import UploadModal from './UploadModal';
+import AddProductModal from './AddProductModal';
+import AddLocationModal from './AddLocationModal';
+import AddMerchantModal from './AddMerchantModal';
+import AddTagModal from './AddTagModal';
+import Stream from 'flarum/utils/Stream';
+
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
-import username from 'flarum/common/helpers/username';
-import Link from 'flarum/components/Link';
 import LoginModal from 'flarum/components/LogInModal';
-import HideModal from './HideModal';
-import ApproveModal from './ApproveModal';
+import {paymentCycleOptions, diskTypeOptions, currencyOptions, availableOptions, renderStars} from '../common/constants';
+import MerchantSelectionModal from "./MerchantSelectionModal";
+import LocationSelectionModal from "./LocationSelectionModal";
+import VpsTagsSelectionModal from "./VpsTagsSelectionModal";
 
 export default class IndexShowPage extends Page {
   oninit(vnode) {
     super.oninit(vnode);
     this.bodyClass = 'App--index';
-    app.setTitle(app.translator.trans(
-      `nodeloc-friend-link.forum.title.page_title`
-    ));
+    // Stream to store selected merchants
 
-    app.friendLinkListState.refreshParams({
-      filter: {},
-      sort: '-created_time',
+    this.filterMerchants =   [];
+    this.filterLocations = [];
+    this.filterVpsTags =  [];
+    app.setTitle(app.translator.trans(
+      `nodeloc-vps.forum.title.page_title`
+    ));
+    app.vpsListState.refreshParams({
+      filter: {
+      },
+      sort: '-created_at',
     });
   }
 
+  applySorts(label) {
+    const state = app.vpsListState;
+    const filters = {
+      merchants: this.filterMerchants,
+      locations: this.filterLocations,
+      tags: this.filterVpsTags
+    };
+    const sortMap = {
+      recent: '-created_at',
+      score: '-score',
+      score_asc: 'score',
+      cpu: '-cpu',
+      cpu_asc: 'cpu',
+      memory: '-memory',
+      memory_asc: 'memory',
+      storage: '-storage',
+      storage_asc: 'storage',
+      bandwidth: '-bandwidth',
+      bandwidth_asc: 'bandwidth',
+      GIG: '-gig',
+      GIG_asc: 'gig',
+      price: '-price',
+      price_asc: 'price'
+    };
+
+    state.refreshParams({
+      filter: {
+        merchants: filters.merchants.length  ? filters.merchants.map(m => m.id) : "",
+        locations: filters.locations.length ? filters.locations.map(l => l.id) : "",
+        tags: filters.tags.length ? filters.tags.map(t => t.id) : ""      },
+      sort: sortMap[label], // 使用传递进来的 label 参数
+    });
+  }
+
+  formatM(gig) {
+    if (gig < 1000) {
+      return gig + 'M';
+    } else {
+      return (gig / 1000).toFixed(1) + 'G';
+    }
+  }
+
+  formatG(gig) {
+    if (gig < 1000) {
+      return gig + 'G';
+    } else {
+      return (gig / 1000).toFixed(1) + 'T';
+    }
+  }
   view() {
     let loading = null;
-    const state = app.friendLinkListState;
+    const state = app.vpsListState;
+    const canAdd = app.session.user && app.forum.attribute('canAddProduct')===true;
     if (state.isInitialLoading() || state.isLoadingNext()) {
       loading = LoadingIndicator.component({
         size: 'large',
@@ -42,6 +102,7 @@ export default class IndexShowPage extends Page {
         "加载更多"
       );
     }
+
     if (state.isInitialLoading() && state.isEmpty()) {
       return <LoadingIndicator/>;
     }
@@ -56,62 +117,142 @@ export default class IndexShowPage extends Page {
             <div className="IndexPage-results sideNavOffset">
               <div>
                 <FilterMenuItem
+                  onChange={(label) => this.applySorts(label)}
                   state={state}
                 />
+                <Button className="Button merchant hasIcon" icon="fas fa-store" onclick={() => this.openMerchantSelectionModal()}>
+                  选择商家
+                </Button>
+                <Button style="display: inline-block;margin-left: 10px;" className="Button location hasIcon" icon="fa-solid fa-location-dot" onclick={() => this.openLocationSelectionModal()}>
+                  选择地区
+                </Button>
+                <Button style="display: inline-block;margin-left: 10px;" className="Button location hasIcon" icon="fa-solid fa-tags" onclick={() => this.openTagsSelectionModal()}>
+                  选择标签
+                </Button>
+
                 <Button
-                  className={`Button friendLink-fresh`}
+                  className={`Button vps-fresh`}
                   icon="fas fa-sync"
                   aria-label="刷新"
                   onclick={() => {
                     state.refresh()
                   }}>
                 </Button>
+                {canAdd &&
                 <Button
-                  className={`Button friendLink-upload-botton`}
+                  className={`Button vps-add-botton`}
                   icon="fas fa-plus"
                   onclick={() => {
                     if (!app.session.user) {
                       app.modal.show(LoginModal)
                       return;
                     }
-                    app.modal.show(UploadModal, {
+                    app.modal.show(AddProductModal, {
                       state: state
                     })
                   }}>
-                  {app.translator.trans(`nodeloc-friend-link.forum.button.share_my_site`)}
+                  {app.translator.trans(`nodeloc-vps.forum.button.product`)}
                 </Button>
+                }
+                {canAdd &&
+                <Button
+                  className={`Button vps-add-botton`}
+                  icon="fas fa-plus"
+                  onclick={() => {
+                    if (!app.session.user) {
+                      app.modal.show(LoginModal)
+                      return;
+                    }
+                    app.modal.show(AddMerchantModal, {
+                      state: state
+                    })
+                  }}>
+                  {app.translator.trans(`nodeloc-vps.forum.button.merchant`)}
+                </Button>
+                }
+                {canAdd &&
+                <Button
+                  className={`Button vps-add-botton`}
+                  icon="fas fa-plus"
+                  onclick={() => {
+                    if (!app.session.user) {
+                      app.modal.show(LoginModal)
+                      return;
+                    }
+                    app.modal.show(AddLocationModal, {
+                      state: state
+                    })
+                  }}>
+                  {app.translator.trans(`nodeloc-vps.forum.button.location`)}
+                </Button>
+                }
+                {canAdd &&
+                <Button
+                  className={`Button vps-add-botton`}
+                  icon="fas fa-plus"
+                  onclick={() => {
+                    if (!app.session.user) {
+                      app.modal.show(LoginModal)
+                      return;
+                    }
+                    app.modal.show(AddTagModal, {
+                      state: state
+                    })
+                  }}>
+                  {app.translator.trans(`nodeloc-vps.forum.button.tag`)}
+                </Button>
+                }
               </div>
-              <ul className="FriendLink-SiteList">
+              <ul className="VPS-SiteList">
                 {
                   state.getPages().map((pg) => {
                     return pg.items.map((item) => {
-                      // 检查当前用户是否是管理员
-                      const isAdmin = app.session.user && app.session.user.isAdmin();
-                      const isOwner = app.session.user && item.user().id() === app.session.user.id();
+                      const tagIds = item.data.relationships.tags.data.map(tag => tag.id);
+                      const tagNames = tagIds.map(tagId => {
+                        const tag = app.store.data.vps_tags[tagId];
+                        return tag ? tag.tag_name() : 'Unknown Tag';
+                      });
+                      return  (
+                        <li className="VPS-List-item" id={"vps-" + item.id()}>
+                          <div className="VPS-Product">
+                            <span className="merchant">{app.store.data.vps_merchants[item.merchant_id()].merchant_name()}</span>
+                            <br />
+                            <span className="product">{item.product_name()}</span>
+                          </div>
+                          <div className="VPS-store">
+                            <span>{renderStars(item.score())}</span>
+                            <br/>
+                            <span>{availableOptions[item.available()]}</span>
+                          </div>
+                          <div className="VPS-config">
+                            <span >
+                              {item.cpu()} vCPU {item.memory()}G RAM {this.formatG(item.storage())} {diskTypeOptions[item.disk_type()]}
+                            </span>
+                            <br />
+                            {this.formatM(item.GIG())}带宽 {this.formatG(item.bandwidth())}流量
+                          </div>
+                          <div className="VPS-location">
+                            <span >
+                              {app.store.data.vps_locations[item.location_id()].location_name()}
+                            </span>
+                          </div>
+                          <div className="VPS-cost">
+                            <span >
+                              {item.cost()}{currencyOptions[item.currency()]}/{paymentCycleOptions[item.payment_cycle()]}
+                            </span>
+                            <br/>
+                            <span>约{item.price()}CNY/年</span>
+                          </div>
+                          <div className="VPS-tags">
+                            {tagNames.map(tagName => (
+                              <span className="tag-style">{tagName}</span>
+                            ))}
+                          </div>
 
-                      // 如果是管理员，或者 item.status() 为真，则渲染该项
-                      return (isAdmin || isOwner || item.status()) && (
-                        <li className="FriendLink-SiteList-item" id={"card-" + item.id()}>
-                          <a href={item.siteurl()} target="_blank" rel="noopener noreferrer"
-                             style="text-decoration: none;">
-                            <div className="FriendLink-SiteList-logo">
-                              <img className="Sitelogo" loading="lazy" src={item.sitelogourl()}/>
-                            </div>
-                            <div className="FriendLink-SiteList-site">
-                              <a href={item.siteurl()} target="_blank" rel="noopener noreferrer">
-                                {item.sitename()}
-                              </a>
-                            </div>
-                            <div className="FriendLink-SiteList-user">
-                                          <span className="username">
-                                            <a href={app.route('user', { username: item.user().username() })}>{username(item.user())}</a>
-                                          </span>
-                            </div>
-                          </a>
-                          <div className="action-buttons">
-                            {this.likeButton(item, state)}
-                            {this.exchangeButton(item, this)}
-                            {!item.status() && isAdmin && this.approveButton(item, this)}
+                          <div className="VPS-action">
+                            <a href="#">监控</a>
+                            <a href={item.review_url() ? item.review_url() : "https://www.nodeloc.com/t/review"}>测评</a>
+                            <a href={item.buy_url() ? item.buy_url() : "#"}>购买</a>
                           </div>
                         </li>
                       );
@@ -120,148 +261,60 @@ export default class IndexShowPage extends Page {
                   })
                 }
               </ul>
-              {<div className="SupportSearchList-loadMore friendLink-more">{loading}</div>}
+              {<div className="SupportSearchList-loadMore vps-more">{loading}</div>}
             </div>
           </div>
         </div>
       </div>
     )
   }
-
-  getClass(width, height) {
-    // (/Mobi|Android|iPhone/i.test(navigator.userAgent))
-    if (width > height) {
-      return "tall";
-    }
-    if (height < 1000) {
-      return "tall";
-    }
-    if (height > 1000) {
-      return "taller";
-      ;
-    }
-    return "taller";
-    ;
-  }
-
-  likeStatus(count) {
-    if (count > 0 && count < 1000) {
-      return count
-    }
-    if (count >= 1000) {
-      return count / 1000 + "k"
-    }
-    return ""
-  }
-
-  viewer(item) {
-    var count = item.view_count();
-    if (count >= 1000) {
-      count = count / 1000 + "k";
-    }
-    return (
-      <Button
-        className={`Button viewer`}
-        icon={"far fa-eye"}
-        aria-label="浏览量"//防止console报错
-        disable={true}
-      >
-        {count}
-      </Button>
-    )
-  }
-
-  likeButton(item, state) {
-    return (
-      <Button
-        className={`Button like`}
-        icon={item.is_my_like() ? "fas fa-thumbs-up" : "far fa-thumbs-up"}
-        aria-label="点赞"//防止console报错
-        onclick={() => {
-          if (!app.session.user) {
-            app.modal.show(LoginModal)
-            return;
-          }
-          this.like(item.id(), state);
-        }}>
-        {this.likeStatus(item.like_count())}
-      </Button>
-    )
-  }
-
-  like(show_id, state) {
-    app
-      .request({
-        method: 'POST',
-        url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/like`,
-        body: {show_id},
-      })
-      .then((msg) => {
-        if (msg.status) {
-          $("#card-" + show_id + " .action .like i").removeClass("far fa-thumbs-up")
-          $("#card-" + show_id + " .action .like i").addClass("fas fa-thumbs-up")
-          var origin = $("#card-" + show_id + " .action .like span").text();
-          if (!origin) {
-            origin = 0;
-          }
-          var likeNum = parseInt(origin) + 1;
-          if (origin >= 1000) {
-            likeNum = origin / 1000 + "k";
-          }
-          $("#card-" + show_id + " .action .like span").text(likeNum)
-          return;
-        }
-      })
-      .catch((error) => {
+  openMerchantSelectionModal() {
+    // 打开商家选择弹窗
+    app.modal.show(MerchantSelectionModal, {
+      state: this.state,
+      onsubmit: (selectedMerchants) => {
+        this.handleMerchantSelect(selectedMerchants);
         m.redraw();
-      });
+      }
+    });
   }
 
-  exchangeButton(item, e) {
-    const isAdmin = app.session.user && app.session.user.isAdmin();
-
-    if (isAdmin || (app.session.user && app.session.user.data.id === item.user().id())) {
-      return (
-        <Button
-          className={`Button bulk`}
-          icon="fas fa-trash"
-          aria-label="删除链接"
-          onclick={() => {
-            if (!app.session.user) {
-              app.modal.show(LoginModal);
-              return;
-            }
-
-            app.modal.show(HideModal, {
-              show_id: item.id(),
-            });
-          }}
-        ></Button>
-      );
-    }
+  openLocationSelectionModal() {
+    // 打开商家选择弹窗
+    app.modal.show(LocationSelectionModal, {
+      state: this.state,
+      onsubmit: (selectedLocations) => {
+        this.handleLocationSelect(selectedLocations);
+        m.redraw();
+      }
+    });
   }
 
-  approveButton(item, e) {
-    const isAdmin = app.session.user && app.session.user.isAdmin();
+  openTagsSelectionModal() {
+    // 打开商家选择弹窗
+    app.modal.show(VpsTagsSelectionModal, {
+      state: this.state,
+      onsubmit: (selectedVpsTags) => {
+        this.handleVpsTagsSelect(selectedVpsTags);
+        m.redraw();
+      }
+    });
+  }
+  handleMerchantSelect(selectedMerchants) {
+    this.filterMerchants = selectedMerchants;
+    this.applySorts();
+    m.redraw();
+  }
 
-    if (isAdmin) {
-      return (
-        <Button
-          className={`Button bulk`}
-          icon="fas fa-check"
-          aria-label="更改状态"
-          onclick={() => {
-            if (!app.session.user) {
-              app.modal.show(LoginModal);
-              return;
-            }
+  handleLocationSelect(selectedLocations) {
+    this.filterLocations = selectedLocations;
+    this.applySorts();
+    m.redraw();
+  }
 
-            app.modal.show(ApproveModal, {
-              show_id: item.id(),
-            });
-          }}
-        ></Button>
-      );
-    }
+  handleVpsTagsSelect(selectedVpsTags) {
+    this.filterVpsTags = selectedVpsTags;
+    this.applySorts();
+    m.redraw();
   }
 }

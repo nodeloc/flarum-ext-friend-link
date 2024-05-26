@@ -1,8 +1,8 @@
 <?php
-namespace Nodeloc\FriendLink\Logic;
+namespace Nodeloc\VPS\Logic;
 
-use Nodeloc\FriendLink\Model\FriendLink;
-use Nodeloc\FriendLink\Model\FriendLinkViews;
+use Nodeloc\VPS\Model\VPS;
+use Nodeloc\VPS\Model\VPSViews;
 
 class ViewAddLogic
 {
@@ -18,22 +18,22 @@ class ViewAddLogic
         if($actor->id){
             $uid = $actor->id;
         }
-        $status = FriendLinkViews::where([
-            "friend_link_id" => $showId,
+        $status = VPSViews::where([
+            "vps_id" => $showId,
             "ip" => $ip
         ])->first();
         if($status){
             return $msg;
         }
 
-        FriendLinkViews::insert([
+        VPSViews::insert([
             "user_id" => $uid,
-            "friend_link_id" => $showId,
+            "vps_id" => $showId,
             "ip" => $ip,
             "created_time" => time()
         ]);
 
-        FriendLink::where([
+        VPS::where([
             "id" => $showId,
         ])->increment("view_count");
         $msg["status"] = true;

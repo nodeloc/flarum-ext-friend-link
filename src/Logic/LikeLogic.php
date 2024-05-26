@@ -1,10 +1,10 @@
 <?php
-namespace Nodeloc\FriendLink\Logic;
+namespace Nodeloc\VPS\Logic;
 use Flarum\Foundation\ValidationException;
-use Nodeloc\FriendLink\Model\FriendLinkAction;
-use Nodeloc\FriendLink\Model\FriendLink;
+use Nodeloc\VPS\Model\VPSAction;
+use Nodeloc\VPS\Model\VPS;
 use Flarum\Notification\NotificationSyncer;
-use Nodeloc\FriendLink\Notification\LikedNotification;
+use Nodeloc\VPS\Notification\LikedNotification;
 use Flarum\User\User;
 
 class LikeLogic
@@ -16,7 +16,7 @@ class LikeLogic
         if(!$showId){
             throw new ValidationException(['msg' => "您选择的内容有误"]);
         }
-        $cardStatus = FriendLink::where([
+        $cardStatus = VPS::where([
             "id" => $showId
         ])->first();
         if(!$cardStatus){
@@ -26,8 +26,8 @@ class LikeLogic
             throw new ValidationException(['msg' => "您不能点赞自己的内容"]);
         }
 
-        $status = FriendLinkAction::where([
-            "friend_link_id" => $showId,
+        $status = VPSAction::where([
+            "vps_id" => $showId,
             "user_id" => $actor->id,
             "type" => 0
         ])->first();
@@ -36,14 +36,14 @@ class LikeLogic
             throw new ValidationException(['msg' => "您已点赞过此内容"]);
         }
 
-        FriendLinkAction::insert([
-            "friend_link_id" => $showId,
+        VPSAction::insert([
+            "vps_id" => $showId,
             "user_id" => $actor -> id,
             "type" => 0,
             "created_time" => time()
         ]);
 
-        FriendLink::where([
+        VPS::where([
             "id" => $showId,
         ])->increment("like_count");
 

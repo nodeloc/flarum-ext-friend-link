@@ -1,17 +1,13 @@
 {
-    "name": "@nodeloc/friend-link",
+    "name": "@nodeloc/vps",
     "private": true,
     "version": "0.0.0",
     "devDependencies": {
         "@fancyapps/ui": "^4.0.27",
         "@flarum/prettier-config": "^1.0.0",
-        "blob-util": "^2.0.2",
         "clean-webpack-plugin": "^4.0.0",
-        "cropperjs": "^1.5.13",
-        "filemanager-webpack-plugin": "^8.0.0",
         "flarum-tsconfig": "^1.0.2",
         "flarum-webpack-config": "^2.0.0",
-        "image-blob-reduce": "^4.1.0",
         "prettier": "^2.5.1",
         "typescript": "^4.5.4",
         "typescript-coverage-report": "^0.6.1",

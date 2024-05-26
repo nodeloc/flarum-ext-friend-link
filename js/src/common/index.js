@@ -1,4 +1,4 @@
 import app from 'flarum/common/app';
 
-app.initializers.add('nodeloc/friend-link', () => {
+app.initializers.add('nodeloc/vps', () => {
 });

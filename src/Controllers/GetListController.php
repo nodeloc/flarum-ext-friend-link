@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodeloc\FriendLink\Controllers;
+namespace Nodeloc\VPS\Controllers;
 
 use Flarum\Api\Controller\AbstractListController;
 use Psr\Http\Message\ServerRequestInterface;
@@ -8,25 +8,25 @@ use Tobscure\JsonApi\Document;
 use Flarum\Http\UrlGenerator;
 use Flarum\Query\QueryCriteria;
 use Flarum\Http\RequestUtil;
-use Nodeloc\FriendLink\Filter\GetListFilter;
-use Nodeloc\FriendLink\Serializer\GetListSerializer;
+use Nodeloc\VPS\Filter\GetListFilter;
+use Nodeloc\VPS\Serializer\GetListSerializer;
 
 class GetListController extends AbstractListController
 {
     public $serializer = GetListSerializer::class;
 
-    public $limit = 100;
+    public $limit = 15;
 
     public $maxLimit = 100;
 
     protected $filterer;
-    public $include = ["user"];//关联操作
 
-    public $sort = ['created_time' => 'desc'];
+    // 指定要包含的关系
+    public $include = ["user", "merchant", "location", "tags"];
 
-    public $sortFields = ['created_time', 'like_count'];
+    public $sort = ['created_at' => 'desc'];
 
-    // protected $searcher;
+    public $sortFields = ['created_at', 'cpu','memory','storage','bandwidth','gig','price','score'];
 
     protected $url;
 
@@ -53,7 +53,7 @@ class GetListController extends AbstractListController
         $results = $this->filterer->filter($criteria, $limit, $offset);
 
         $document->addPaginationLinks(
-            $this->url->to('api')->route('FriendLink.list'),
+            $this->url->to('api')->route('VPS.list'),
             $request->getQueryParams(),
             $offset,
             $limit,
@@ -61,6 +61,9 @@ class GetListController extends AbstractListController
         );
 
         $results = $results->getResults();
+
+        // 使用 Eloquent 的 `with` 方法加载关联关系
+        $results->load(['user', 'merchant', 'location', 'tags']);
 
         $this->loadRelations($results, $include);
 
