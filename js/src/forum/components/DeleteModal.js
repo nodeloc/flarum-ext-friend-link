@@ -4,18 +4,18 @@ import Button from 'flarum/common/components/Button';
 import Alert from 'flarum/common/components/Alert';
 
 
-export default class HideModal extends Modal {
+export default class DeleteModal extends Modal {
     oninit(vnode) {
         super.oninit(vnode);
         this.show_id = vnode.attrs.show_id;
     }
 
     title() {
-        return "是否更改状态？";
+        return "是否删除链接";
     }
 
     className() {
-        return 'ApproveCardLinkModal Modal--small';
+        return 'HideCardLinkModal Modal--small';
     }
 
     content() {
@@ -23,13 +23,13 @@ export default class HideModal extends Modal {
             <div className="Modal-footer">
                  <Button
                     className={'Button Button--primary m-r-10'}
-                    onclick = {()=>this.approveReq(this.show_id)}
+                    onclick = {()=>this.deleteReq(this.show_id)}
                 >
                     确定
                 </Button>
                 <Button
                     className={'Button'}
-                    onclick = {()=>{this.approve()}}
+                    onclick = {()=>{this.hide()}}
                 >
                     取消
                 </Button>
@@ -37,17 +37,19 @@ export default class HideModal extends Modal {
         )
     }
 
-    approveReq(show_id){
+  deleteReq(show_id){
         app
         .request({
             method: 'POST',
-            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/approve`,
+            url: `${app.forum.attribute('apiUrl')}/nodeloc/friend_link/delete`,
             body: { show_id },
         })
         .then(() => {
-            app.alerts.show(Alert, { type: 'success' }, "审核成功");
+            app.alerts.show(Alert, { type: 'success' }, "删除成功");
             setTimeout(() => app.alerts.clear(), 3000);
-            this.hide();
+            this.hide()
+            var ui = document.getElementById("card-"+show_id);
+            ui.style.display="none";
         })
 
     }

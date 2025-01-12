@@ -11,7 +11,7 @@ export default class HideModal extends Modal {
     }
 
     title() {
-        return "是否删除您的链接";
+        return "是否隐藏链接";
     }
 
     className() {
@@ -45,10 +45,9 @@ export default class HideModal extends Modal {
             body: { show_id },
         })
         .then(() => {
-            app.alerts.show(Alert, { type: 'success' }, "删除成功");
-            this.hide()
-            var ui = document.getElementById("card-"+show_id);
-            ui.style.display="none";
+            app.alerts.show(Alert, { type: 'success' }, "隐藏成功");
+            setTimeout(() => app.alerts.clear(), 3000);
+            this.hide();
         })
 
     }

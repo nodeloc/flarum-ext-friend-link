@@ -38,7 +38,7 @@ class GetListSerializer extends AbstractSerializer
             'view_count' => $friendlink->view_count,
             'exchange_count' => $friendlink->exchange_count,
             'is_my_like' => $status ? true : false,
-            'status' => $friendlink->status == 1 ? true : false,
+            'status' => $friendlink->status,
             'sitename' => $friendlink->sitename,
             'siteurl' => $friendlink->siteurl,
             'sitelogourl' => $friendlink->sitelogourl

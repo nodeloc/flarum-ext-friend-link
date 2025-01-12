@@ -6,10 +6,10 @@ import Button from 'flarum/common/components/Button';
 import UploadModal from './UploadModal';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
 import username from 'flarum/common/helpers/username';
-import Link from 'flarum/components/Link';
 import LoginModal from 'flarum/components/LogInModal';
 import HideModal from './HideModal';
 import ApproveModal from './ApproveModal';
+import DeleteModal from "./DeleteModal";
 
 export default class IndexShowPage extends Page {
   oninit(vnode) {
@@ -103,15 +103,22 @@ export default class IndexShowPage extends Page {
                               </a>
                             </div>
                             <div className="FriendLink-SiteList-user">
-                                          <span className="username">
-                                            <a href={app.route('user', { username: item.user().username() })}>{username(item.user())}</a>
-                                          </span>
+                              <span className="username">
+                                <a href={app.route('user', { username: item.user().username() })}>{username(item.user())}</a>
+                              </span>
                             </div>
                           </a>
                           <div className="action-buttons">
                             {this.likeButton(item, state)}
-                            {this.exchangeButton(item, this)}
-                            {!item.status() && isAdmin && this.approveButton(item, this)}
+                            {this.deleteButton(item, this)}
+                            {(() => {
+                              if (item.status() === 2 && isAdmin) {
+                                return this.approveButton(item, this);
+                              }else{
+                                return this.hideButton(item, this);
+                              }
+                            })()}
+
                           </div>
                         </li>
                       );
@@ -217,7 +224,7 @@ export default class IndexShowPage extends Page {
       });
   }
 
-  exchangeButton(item, e) {
+  deleteButton(item, e) {
     const isAdmin = app.session.user && app.session.user.isAdmin();
 
     if (isAdmin || (app.session.user && app.session.user.data.id === item.user().id())) {
@@ -232,7 +239,7 @@ export default class IndexShowPage extends Page {
               return;
             }
 
-            app.modal.show(HideModal, {
+            app.modal.show(DeleteModal, {
               show_id: item.id(),
             });
           }}
@@ -249,7 +256,7 @@ export default class IndexShowPage extends Page {
         <Button
           className={`Button bulk`}
           icon="fas fa-check"
-          aria-label="更改状态"
+          aria-label="批准"
           onclick={() => {
             if (!app.session.user) {
               app.modal.show(LoginModal);
@@ -257,6 +264,30 @@ export default class IndexShowPage extends Page {
             }
 
             app.modal.show(ApproveModal, {
+              show_id: item.id(),
+            });
+          }}
+        ></Button>
+      );
+    }
+  }
+  hideButton(item, e)
+  {
+    const isAdmin = app.session.user && app.session.user.isAdmin();
+
+    if (isAdmin) {
+      return (
+        <Button
+          className={`Button bulk`}
+          icon="fa-solid fa-eye-slash"
+          aria-label="隐藏"
+          onclick={() => {
+            if (!app.session.user) {
+              app.modal.show(LoginModal);
+              return;
+            }
+
+            app.modal.show(HideModal, {
               show_id: item.id(),
             });
           }}
